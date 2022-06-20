@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 
 import { Container } from './styles';
 import { ButtonIcon } from '../ButtonIcon';
@@ -12,10 +12,11 @@ export function FormBox() {
 
   async function handleProductAdd() {
 
-    firestore().collection('products').add({
+    firestore().collection('products').doc('my-custom-id').set({
       description,
       quantity,
       done: false,
+      createdAt: firestore.FieldValue.serverTimestamp(),
     }).then(() => {
 
       Alert.alert('Produto adicionado com sucesso!');
@@ -25,6 +26,7 @@ export function FormBox() {
 
     setDescription('');
     setQuantity(0);
+    Keyboard.dismiss();
   }
 
   return (
@@ -33,6 +35,7 @@ export function FormBox() {
         placeholder="Nome do produto"
         size="medium"
         onChangeText={setDescription}
+        value={description}
       />
 
       <Input
@@ -41,6 +44,7 @@ export function FormBox() {
         size="small"
         style={{ marginHorizontal: 8 }}
         onChangeText={(e) => setQuantity(Number(e))}
+        value={String(quantity)}
       />
 
       <ButtonIcon
