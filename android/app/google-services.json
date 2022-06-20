@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "228391038872",
+    "project_id": "myshopping-b8ff6",
+    "storage_bucket": "myshopping-b8ff6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228391038872:android:a1524d17151fb58b5005ed",
+        "android_client_info": {
+          "package_name": "com.fixshopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228391038872-5b00hkdr2bee8u65gbk62rf0t25gi1o0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fixshopping",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "228391038872-1m3543l4r4gosomkabvrs322grnjo710.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC47wbM2y2ljec7dbT2Ar5kbPt-zJtnvls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228391038872-1m3543l4r4gosomkabvrs322grnjo710.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
