@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import storage from '@react-native-firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 
 import { Button } from '../../components/Button';
@@ -6,6 +7,7 @@ import { Header } from '../../components/Header';
 import { Photo } from '../../components/Photo';
 
 import { Container, Content, Progress, Transferred } from './styles';
+import { Alert } from 'react-native';
 
 export function Upload() {
   const [image, setImage] = useState('');
@@ -14,7 +16,7 @@ export function Upload() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status == 'granted') {
-      const result = await ImagePicker.launchImageLibraryAsync({
+      const result: any = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [4, 4],
         quality: 1,
@@ -26,6 +28,17 @@ export function Upload() {
     }
   };
 
+  async function handleUpload() {
+    const fileName = new Date().getTime();
+    const reference = storage().ref(`images/${fileName}`);
+
+    reference.putFile(image).then(() => {
+      Alert.alert('Uploaded!');
+    }).catch(error => {
+      console.error(error);
+    });
+  }
+
   return (
     <Container>
       <Header title="Lista de compras" />
@@ -35,7 +48,7 @@ export function Upload() {
 
         <Button
           title="Fazer upload"
-          onPress={() => { }}
+          onPress={handleUpload}
         />
 
         <Progress>
