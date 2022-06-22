@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import storage from '@react-native-firebase/storage';
 
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 
 import { Container, PhotoInfo } from './styles';
 import { Header } from '../../components/Header';
@@ -23,8 +23,15 @@ export function Receipts() {
     setPhotoInfo(`Upload realizado em ${info.timeCreated}`);
   }
 
+  async function handleDeleteImage(path: string) {
+    await storage().ref(path).delete()
+      .then(() => Alert.alert('Imagem deletada com sucesso!'))
+      .catch(() => Alert.alert('Erro ao deletar imagem!'));
+    setPhotoSelected('');
+    fetchImages();
+  }
 
-  useEffect(() => {
+  async function fetchImages() {
     storage().ref('images').list().then(res => {
       const files = [];
 
@@ -37,6 +44,11 @@ export function Receipts() {
 
       setPhotos(files);
     });
+  }
+
+
+  useEffect(() => {
+    fetchImages();
   }, [])
 
   return (
@@ -56,7 +68,7 @@ export function Receipts() {
           <File
             data={item}
             onShow={() => handleShowImage(item.path)}
-            onDelete={() => { }}
+            onDelete={() => handleDeleteImage(item.path)}
           />
         )}
         contentContainerStyle={{ paddingBottom: 100 }}
