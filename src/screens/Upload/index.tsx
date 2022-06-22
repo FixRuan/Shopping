@@ -33,8 +33,8 @@ export function Upload() {
   async function handleUpload() {
     const fileName = new Date().getTime();
     const reference = storage().ref(`images/${fileName}`);
-
     const uploadTask = reference.putFile(image);
+
     uploadTask.on('state_changed', taskSnapshot => {
       const percentage = (
         (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100
@@ -52,7 +52,7 @@ export function Upload() {
 
   return (
     <Container>
-      <Header title="Lista de compras" />
+      <Header title="Upload de Fotos" />
 
       <Content>
         <Photo uri={image} onPress={handlePickImage} />
