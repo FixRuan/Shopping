@@ -24,6 +24,10 @@ export function SignIn() {
         setEmail('');
         setPassword('');
         Keyboard.dismiss();
+      }).catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('E-mail já cadastrado');
+        }
       });
   }
 
