@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Root, Popup } from "popup-ui";
 import { Keyboard } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
@@ -17,44 +18,130 @@ export function SignIn() {
     console.log(user);
   }
 
-  function handleCreateUserAccount(email, password) {
+  function handleCreateUserAccount(email: string, password: string) {
+    if (email == '' || password == '') {
+      Popup.show({
+        type: "Warning",
+        title: "Cadastro",
+        button: true,
+        textBody: "Preencha todos os campos",
+        buttonText: "Ok",
+        callback: () => Popup.hide(),
+      });
+
+      return;
+    }
+
+
     auth().createUserWithEmailAndPassword(email, password)
       .then(() => {
-        Alert.alert('Usuário criado com sucesso');
         setEmail('');
         setPassword('');
         Keyboard.dismiss();
+
+        Popup.show({
+          type: "Success",
+          title: "Cadastro",
+          button: true,
+          textBody: "Usuário criado com sucesso",
+          buttonText: "Ok",
+          callback: () => Popup.hide(),
+        });
+
       }).catch(error => {
+
         if (error.code === 'auth/email-already-in-use') {
-          Alert.alert('E-mail já cadastrado');
-        }
+          setPassword('');
+          Keyboard.dismiss();
+
+          Popup.show({
+            type: "Danger",
+            title: "Cadastro",
+            button: true,
+            textBody: "E-mail já cadastrado",
+            buttonText: "Ok",
+            callback: () => Popup.hide(),
+          });
+        };
+
+        if (error.code === 'auth/invalid-email') {
+          setPassword('');
+          Keyboard.dismiss();
+
+          Popup.show({
+            type: "Danger",
+            title: "Cadastro",
+            button: true,
+            textBody: "E-mail inválido",
+            buttonText: "Ok",
+            callback: () => Popup.hide(),
+          });
+
+          return;
+        };
+
+        if (error.code === 'auth/weak-password') {
+          setPassword('');
+          Keyboard.dismiss();
+
+          Popup.show({
+            type: "Danger",
+            title: "Cadastro",
+            button: true,
+            textBody: "Senha muito fraca",
+            buttonText: "Ok",
+            callback: () => Popup.hide(),
+          });
+
+          return;
+        };
+
+        if (error.code === 'auth/operation-not-allowed') {
+          setPassword('');
+          Keyboard.dismiss();
+
+          Popup.show({
+            type: "Danger",
+            title: "Cadastro",
+            button: true,
+            textBody: "Operação não permitida",
+            buttonText: "Ok",
+            callback: () => Popup.hide(),
+          });
+
+          return;
+        };
       });
   }
 
 
   return (
-    <Container>
-      <Title>MyShopping</Title>
-      <Subtitle>monte sua lista de compra te ajudar nas compras</Subtitle>
+    <Root>
+      <Container>
+        <Title>MyShopping</Title>
+        <Subtitle>monte sua lista de compra te ajudar nas compras</Subtitle>
 
-      <Input
-        placeholder="e-mail"
-        keyboardType="email-address"
-        onChangeText={setEmail}
-      />
+        <Input
+          value={email}
+          placeholder="e-mail"
+          keyboardType="email-address"
+          onChangeText={setEmail}
+        />
 
-      <Input
-        placeholder="senha"
-        secureTextEntry
-        onChangeText={setPassword}
-      />
+        <Input
+          value={password}
+          placeholder="senha"
+          secureTextEntry
+          onChangeText={setPassword}
+        />
 
-      <Button title="Entrar" onPress={handleSignInAnonymously} />
+        <Button title="Entrar" onPress={handleSignInAnonymously} />
 
-      <Account>
-        <ButtonText title="Recuperar senha" onPress={() => { }} />
-        <ButtonText title="Criar minha conta" onPress={() => handleCreateUserAccount(email, password)} />
-      </Account>
-    </Container>
+        <Account>
+          <ButtonText title="Recuperar senha" onPress={() => { }} />
+          <ButtonText title="Criar minha conta" onPress={() => handleCreateUserAccount(email, password)} />
+        </Account>
+      </Container>
+    </Root>
   );
 }
