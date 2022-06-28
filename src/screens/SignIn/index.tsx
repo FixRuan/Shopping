@@ -9,6 +9,8 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Alert } from 'react-native';
 
+import { popup } from '../../utils/popup';
+
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,13 +22,11 @@ export function SignIn() {
 
   function handleCreateUserAccount(email: string, password: string) {
     if (email == '' || password == '') {
-      Popup.show({
+
+      popup({
         type: "Warning",
         title: "Cadastro",
-        button: true,
-        textBody: "Preencha todos os campos",
-        buttonText: "Ok",
-        callback: () => Popup.hide(),
+        text: "Preencha todos os campos",
       });
 
       return;
@@ -39,13 +39,10 @@ export function SignIn() {
         setPassword('');
         Keyboard.dismiss();
 
-        Popup.show({
+        popup({
           type: "Success",
           title: "Cadastro",
-          button: true,
-          textBody: "Usuário criado com sucesso",
-          buttonText: "Ok",
-          callback: () => Popup.hide(),
+          text: "Usuário criado com sucesso",
         });
 
       }).catch(error => {
@@ -54,28 +51,24 @@ export function SignIn() {
           setPassword('');
           Keyboard.dismiss();
 
-          Popup.show({
+          popup({
             type: "Danger",
             title: "Cadastro",
-            button: true,
-            textBody: "E-mail já cadastrado",
-            buttonText: "Ok",
-            callback: () => Popup.hide(),
-          });
+            text: "E-mail já cadastrado",
+          })
+
+          return;
         };
 
         if (error.code === 'auth/invalid-email') {
           setPassword('');
           Keyboard.dismiss();
 
-          Popup.show({
+          popup({
             type: "Danger",
             title: "Cadastro",
-            button: true,
-            textBody: "E-mail inválido",
-            buttonText: "Ok",
-            callback: () => Popup.hide(),
-          });
+            text: "E-mail inválido",
+          })
 
           return;
         };
@@ -84,14 +77,11 @@ export function SignIn() {
           setPassword('');
           Keyboard.dismiss();
 
-          Popup.show({
+          popup({
             type: "Danger",
             title: "Cadastro",
-            button: true,
-            textBody: "Senha muito fraca",
-            buttonText: "Ok",
-            callback: () => Popup.hide(),
-          });
+            text: "Senha muito fraca",
+          })
 
           return;
         };
@@ -100,14 +90,11 @@ export function SignIn() {
           setPassword('');
           Keyboard.dismiss();
 
-          Popup.show({
+          popup({
             type: "Danger",
             title: "Cadastro",
-            button: true,
-            textBody: "Operação não permitida",
-            buttonText: "Ok",
-            callback: () => Popup.hide(),
-          });
+            text: "Operação não permitida",
+          })
 
           return;
         };
