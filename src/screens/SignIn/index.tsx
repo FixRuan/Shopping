@@ -101,6 +101,11 @@ export function SignIn() {
       });
   }
 
+  async function handleSignInWithEmail(email: string, password: string) {
+    const { user } = await auth().signInWithEmailAndPassword(email, password);
+    console.log(user);
+  }
+
 
   return (
     <Root>
@@ -122,7 +127,7 @@ export function SignIn() {
           onChangeText={setPassword}
         />
 
-        <Button title="Entrar" onPress={handleSignInAnonymously} />
+        <Button title="Entrar" onPress={() => handleSignInWithEmail(email, password)} />
 
         <Account>
           <ButtonText title="Recuperar senha" onPress={() => { }} />
