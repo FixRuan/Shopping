@@ -101,9 +101,52 @@ export function SignIn() {
       });
   }
 
-  async function handleSignInWithEmail(email: string, password: string) {
-    const { user } = await auth().signInWithEmailAndPassword(email, password);
-    console.log(user);
+  function handleSignInWithEmail(email: string, password: string) {
+    auth().signInWithEmailAndPassword(email, password)
+      .then(({ user }) => {
+        console.log(user);
+      }).catch(error => {
+        if (error.code === 'auth/invalid-email') {
+          popup({
+            type: "Danger",
+            title: "Login",
+            text: "E-mail inválido",
+          })
+
+          return;
+        };
+
+        if (error.code === 'auth/user-disabled') {
+          popup({
+            type: "Danger",
+            title: "Login",
+            text: "Usuário desabilitado",
+          })
+
+          return;
+        };
+
+        if (error.code === 'auth/user-not-found') {
+          popup({
+            type: "Danger",
+            title: "Login",
+            text: "Usuário não encontrado",
+          })
+
+          return;
+        };
+
+        if (error.code === 'auth/wrong-password') {
+          popup({
+            type: "Danger",
+            title: "Login",
+            text: "Senha incorreta",
+          })
+
+          return;
+        };
+      });
+
   }
 
 
