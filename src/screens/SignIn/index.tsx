@@ -149,6 +149,37 @@ export function SignIn() {
 
   }
 
+  function handleForgotPassword() {
+    auth().sendPasswordResetEmail(email)
+      .then(() => {
+        popup({
+          type: "Success",
+          title: "Recuperação de senha",
+          text: "E-mail enviado com sucesso",
+        });
+      }).catch(error => {
+        if (error.code === 'auth/invalid-email') {
+          popup({
+            type: "Danger",
+            title: "Recuperação de senha",
+            text: "E-mail inválido",
+          })
+
+          return;
+        };
+
+        if (error.code === 'auth/user-not-found') {
+          popup({
+            type: "Danger",
+            title: "Recuperação de senha",
+            text: "E-mail não cadastrado",
+          })
+
+          return;
+        };
+      });
+  };
+
 
   return (
     <Root>
@@ -173,7 +204,7 @@ export function SignIn() {
         <Button title="Entrar" onPress={() => handleSignInWithEmail(email, password)} />
 
         <Account>
-          <ButtonText title="Recuperar senha" onPress={() => { }} />
+          <ButtonText title="Recuperar senha" onPress={handleForgotPassword} />
           <ButtonText title="Criar minha conta" onPress={() => handleCreateUserAccount(email, password)} />
         </Account>
       </Container>
